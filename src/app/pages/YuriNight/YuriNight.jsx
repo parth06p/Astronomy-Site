@@ -1,122 +1,219 @@
-'use client'
-import '../../globals.css'
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
-import star from '../../../../public/star.png'
-import pic1 from '../../../../public/star.png' // Replace with actual image paths
-import pic2 from '../../../../public/star.png' // Replace with actual image paths
-import pic3 from '../../../../public/star.png' // Replace with actual image paths
-import pic4 from '../../../../public/star.png' // Replace with actual image paths
+"use client";
+import "../../globals.css";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import star from "../../../../public/star.png";
+import pic1 from "../../../../public/images/gallery/Image1.jpg";
+import pic2 from "../../../../public/images/gallery/Image2.jpg";
+import pic3 from "../../../../public/images/gallery/Image3.jpg";
+import pic4 from "../../../../public/images/gallery/Image4.jpg";
+import backgroundImage from "../../../../public/postImages/darkSpace.jpg"; // Ensure this path is correct
+import logo from "../../../../public/Hero.png"; // Update with the correct path
 
 const HomeText = () => {
-    return (
-        <div className="max-w-5xl mx-auto rounded-lg bg-transparent text-white font-roboto text-center mb-20 pb-5 sm:text-4xl text-3xl font-medium title-font py-5 text-white">
-            <div style={{ marginTop: '10%' }}>
-                Welcome to the <span style={{ fontWeight: 'bolder' }}></span> Astronomy Club's Flagship Fest <br /><span style={{ fontWeight: 'bolder' }}>"Yuri's Night"</span>
-            </div>
-        </div>
-    );
+  return (
+    <div className="max-w-5xl mx-auto text-center py-20 flex items-center justify-center space-x-4">
+      {/* Logo */}
+      <Image
+        src={logo}
+        alt="Yuri's Night Logo"
+        width={50}
+        height={50}
+        className="animate-fade-in"
+      />
+
+      {/* Title */}
+      <h1 className="text-4xl sm:text-5xl font-Space Mono text-white drop-shadow-lg animate-fade-in">
+        YURI'S NIGHT
+      </h1>
+    </div>
+  );
+};
+
+const Introduction = () => {
+  return (
+    <div className="max-w-4xl mx-auto text-center text-white text-lg px-5 mb-20 animate-fade-in delay-200">
+      <p className="font-['Pacifico'] text-2xl text-purple-200">
+        Yuri's Night, an annual celebration commemorating Yuri Gagarin's
+        historic journey into space, holds a special significance for The
+        Astronomy Club IIT BHU (Varanasi). It serves as a beacon of inspiration,
+        igniting curiosity and passion for astronomy among students and
+        enthusiasts alike. Through engaging activities, workshops, and
+        discussions, Yuri's Night offers a unique opportunity to explore the
+        mysteries of the cosmos and connect with like-minded individuals.
+      </p>
+    </div>
+  );
+};
+
+const EventCard = ({ event, index }) => {
+  const handleCardClick = () => {
+    alert(`You clicked on ${event.title}`);
+  };
+
+  return (
+    <div
+      key={index}
+      className="relative p-5 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 transform hover:scale-105 cursor-pointer min-h-[300px] group"
+      style={{
+        backgroundImage: `url(${event.img.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        animationDelay: `${index * 100}ms`,
+      }}
+      onClick={handleCardClick}
+    >
+      {/* Overlay now inside a group hover effect */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 group-hover:bg-opacity-30"></div>
+
+      {/* Text Content */}
+      <div className="relative z-10 h-full flex flex-col justify-center items-center text-center transition-all duration-300">
+        <h3 className="text-xl font-bold text-purple-400 group-hover:text-cyan-400">
+          {event.title}
+        </h3>
+        <p className="text-sm mt-2 text-cyan-200 group-hover:text-white">
+          {event.desc}
+        </p>
+      </div>
+    </div>
+  );
 };
 
 const YuriNight = () => {
-    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
-    // Update cursor position on mouse movement
+  useEffect(() => {
     const handleMouseMove = (e) => {
-        setCursorPosition({ x: e.clientX, y: e.clientY });
+      setCursorPosition({ x: e.clientX, y: e.clientY });
     };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
-    useEffect(() => {
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, []);
+  const events = [
+    {
+      title: "Astro Talk",
+      desc: "A celestial clash of intellects as contestants compete in debating astronomical topics, showcasing their knowledge and eloquence.",
+      img: pic1,
+    },
+    {
+      title: "Cosmic Script",
+      desc: "Where quills meet quasars in a cosmic competition of literary prowess, as writers craft compelling articles exploring the wonders of the universe.",
+      img: pic2,
+    },
+    {
+      title: "Cosmic Canvas",
+      desc: "A stellar showdown of artistic prowess, where participants vie to capture the beauty of the cosmos on canvas, blending imagination and skill in a celestial contest.",
+      img: pic3,
+    },
+    {
+      title: "Astro Quiz",
+      desc: "A celestial-themed trivia competition that challenges participants' knowledge of astronomy and space exploration.",
+      img: pic4,
+    },
+    {
+      title: "Planet Hunt",
+      desc: "A celestial challenge of machine learning prowess, where participants race to identify exoplanets using cutting-edge algorithms in this thrilling competition.",
+      img: pic4,
+    },
+    {
+      title: "Astro Pixels",
+      desc: "Explore the universe through a cutting-edge lens, utilizing deep learning and computer vision to unlock the secrets of space within celestial images.",
+      img: pic4,
+    },
+    {
+      title: "Telescon",
+      desc: "A hands-on experience in constructing your own telescope, merging education with practical astronomy, and bringing the cosmos closer to home.",
+      img: pic4,
+    },
+  ];
 
-    return (
-        <>
-            {/* Custom Star Cursor */}
-            <div
-                className="fixed top-0 left-0 pointer-events-none"
-                style={{
-                    transform: `translate(${cursorPosition.x}px, ${cursorPosition.y}px)`,
-                    zIndex: 1000,
-                }}
-            >
-                <Image src={star} alt="Star Cursor" width={30} height={30} />
-            </div>
+  return (
+    <>
+      {/* Custom Star Cursor */}
+      <div
+        className="fixed top-0 left-0 pointer-events-none"
+        style={{
+          transform: `translate(${cursorPosition.x}px, ${cursorPosition.y}px)`,
+          zIndex: 1000,
+        }}
+      >
+        <Image
+          src={star}
+          alt="Star Cursor"
+          width={30}
+          height={30}
+          className="animate-spin-slow"
+        />
+      </div>
 
-            <div style={{ height: 50 }}></div>
-            <div
-                style={{
-                    backgroundImage: `url('../../../static/bcg.gif')`,
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                    minHeight: '88vh',
-                    cursor: 'none' // Hide default cursor
-                }}
-            >
-                <HomeText />
-                {/* Container for images and texts */}
-                <div className="flex flex-wrap justify-center gap-10 p-10">
-                    {/* Image and Text Block 1 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <Image src={pic1} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                        <div className="ml-5 text-white">
-                            <h2 className="text-xl font-bold">Astro Talk</h2>
-                            <p>A celestial clash of intellects where <br />contestants debate in the given topics</p>
-                        </div>
-                    </div>
+      {/* Full-Page Background Image */}
+      <div
+        className="fixed top-0 left-0 w-full h-full -z-10"
+        style={{
+          backgroundImage: `url(${backgroundImage.src})`, // Ensure this path is correct
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
 
-                    {/* Image and Text Block 2 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <div className="mr-5 text-white">
-                            <h2 className="text-xl font-bold">Cosmic Script</h2>
-                            <p>An article writing competition<br />to explore the wonders of the cosmos</p>
-                        </div>
-                        <Image src={pic2} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                    </div>
+      {/* Semi-Transparent Overlay */}
+      <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 -z-10"></div>
 
-                    {/* Image and Text Block 3 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <Image src={pic3} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                        <div className="ml-5 text-white">
-                            <h2 className="text-xl font-bold">Cosmic Canvas</h2>
-                            <p>An art competition where one captures<br /> the beauty of cosmos on canvas.</p>
-                        </div>
-                    </div>
+      {/* Main Content */}
+      <div
+        className="min-h-screen text-white text-center pt-20 relative z-10"
+        style={{ cursor: "none" }}
+      >
+        <HomeText />
 
-                    {/* Image and Text Block 4 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <div className="mr-5 text-white">
-                            <h2 className="text-xl font-bold">Astro Quiz</h2>
-                            <p>A quiz competition challenging <br />participants knowledge on Astronomy</p>
-                        </div>
-                        <Image src={pic4} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                    </div>
+        {/* Introduction Section */}
+        <Introduction />
 
-                    {/* Image and Text Block 5 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <Image src={pic4} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                        <div className="ml-5 text-white">
-                            <h2 className="text-xl font-bold">Planet Hunt</h2>
-                            <p>A celestial Challenge utilising Machine <br />Learning cut-edge algorithms </p>
-                        </div>
-                    </div>
+        {/* Events Section */}
+        <section id="events" className="p-10">
+          <h2 className="text-3xl font-bold text-purple-400 mb-5 animate-fade-in delay-200">
+            Featured Events
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 px-4 sm:px-6 lg:px-8">
+            {events.map((event, index) => (
+              <EventCard key={index} event={event} index={index} />
+            ))}
+          </div>
+        </section>
 
-                    {/* Image and Text Block 6 */}
-                    <div className="flex items-center p-3 border border-white rounded-lg bg-opacity-30 bg-white">
-                        <div className="mr-5 text-white">
-                            <h2 className="text-xl font-bold">Astro Pixels</h2>
-                            <p>Competition to explore cosmos using<br /> Deep Learning and Computer Vision</p>
-                        </div>
-                        <Image src={pic4} alt="Picture 6" width={150} height={150} className="rounded-lg transition-transform transform hover:scale-105" />
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+        {/* Register Section */}
+        <section id="register" className="p-10 text-center">
+          <h2 className="text-3xl font-bold text-purple-400 animate-fade-in delay-300">
+            Register Now
+          </h2>
+          <p className="mt-2 text-cyan-200 animate-fade-in delay-400">
+            Join us for an unforgettable experience!
+          </p>
+          <a
+            href="https://yurisnight.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-block bg-purple-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-purple-600 transition-colors animate-fade-in delay-500"
+          >
+            Register
+          </a>
+        </section>
+      </div>
+
+      {/* Footer Section */}
+      <footer
+        id="contact"
+        className="bg-black bg-opacity-70 text-white p-5 text-center relative z-10"
+      >
+        <p className="animate-fade-in delay-600">
+          Contact us at{" "}
+          <span className="text-cyan-400">astroclub@example.com</span>
+        </p>
+      </footer>
+    </>
+  );
 };
 
 export default YuriNight;
